@@ -85,7 +85,17 @@ body {
 }
 .days li.active {
   color: rgb(224, 28, 61);
+  width: 25px;
+  height: 25px;
+  background-color: #aaa;
+  border-radius: 20px;
 }
+/* .days li.active::before {
+  background: #1869dd;
+}
+.days li:not(.active):hover::before {
+  background: #d1e1f8;
+} */
 .calendar .days li::before {
   position: absolute;
   content: "";
@@ -99,4 +109,10 @@ body {
 }
 .days li:hover::before {
   background: #f2f2f2;
+}
+.chosen {
+  width: 20px;
+  height: 20px;
+  border: 1px gray solid;
+  padding-bottom: 5px;
 }
