@@ -52,7 +52,12 @@ const renderCalendar = () => {
   let liTag = "";
   console.log(new Date().getDate(), new Date().getFullYear());
   for (let i = firstDayOfMonth; i > 0; i--) {
-    liTag += `<li class="inactive">${lastDateOfLastMonth - i + 1}</li>`;
+    let newTime = new Date(
+      `${i} ${months[currentMonth - 1]} ${currentYear}`
+    ).getTime();
+    liTag += `<li class="inactive" data-date=${newTime}>${
+      lastDateOfLastMonth - i + 1
+    }</li>`;
   }
 
   for (let i = 1; i <= lastDateOfMonth; i++) {
@@ -67,14 +72,19 @@ const renderCalendar = () => {
       currentMonth == new Date().getMonth() &&
       currentYear == new Date().getFullYear()
     ) {
-      liTag += `<li class="liActive active">${i}</li>`;
+      liTag += `<li class="liActive active" data-date=${newDate}>${i}</li>`;
     } else {
-      liTag += `<li class="liActive">${i}</li>`;
+      liTag += `<li class="liActive" data-date=${newDate}>${i}</li>`;
     }
   }
 
   for (let i = lastDayOfMonth; i < 6; i++) {
-    liTag += `<li class="inactive">${i - lastDayOfMonth + 1}</li>`;
+    let newTime = new Date(
+      `${i} ${months[currentMonth + 1]} ${currentYear}`
+    ).getTime();
+    liTag += `<li class="inactive" data-date=${newTime}>${
+      i - lastDayOfMonth + 1
+    }</li>`;
   }
 
   //Map months
@@ -136,6 +146,7 @@ const handleClickDate = () => {
         // func forEach lap qua chon class chosen de remove
         listItems.forEach((e) => {
           e.classList.remove("chosen");
+          e.classList.remove("paint");
         });
         saveFirstDate = null;
         saveFinalDate = null;
@@ -154,6 +165,11 @@ const handleClickDate = () => {
           "en-US",
           optionsDate
         )}`;
+
+        // handleDatePicker();
+        // getDaysInRange(saveFirstDate, saveFinalDate);
+        handlePicker();
+
         // new Date(saveFirstDate) dùng để parse ra time
       } else {
         // saveFirstDate = currentDate.innerText;
@@ -211,10 +227,11 @@ document.getElementById("select-year").onchange = function () {
   changeOptionYear();
 };
 
+// * show canlendar is open and close
 function handleOnShowCalendar() {
   dateInput.addEventListener("click", function () {
     const calendar = document.querySelector(".wrapper");
-    console.log(calendar);
+
     if (calendar.classList.contains("show")) {
       calendar.classList.remove("show");
     } else if (calendar && !calendar.classList.contains("show")) {
@@ -223,3 +240,31 @@ function handleOnShowCalendar() {
   });
 }
 handleOnShowCalendar();
+
+function getDaysInRange(start, end) {
+  console.log(start, end);
+  // Create a new Date object from the start date
+  var date = new Date(start);
+  date.setDate(date.getDate() + 1);
+  // Initialize an empty array to store the days
+  var days = [];
+  // Loop until the date is equal or greater than the end date
+  while (date < new Date(end)) {
+    // Push a copy of the current date into the array
+    days.push(new Date(date).getTime());
+    // Increment the date by one day
+    date.setDate(date.getDate() + 1);
+  }
+  // handleRangeDays(days);
+  // Return the array of days
+  console.log(days);
+  return days;
+}
+
+function handlePicker() {
+  const days = getDaysInRange(saveFirstDate, saveFinalDate);
+  for (let day of days) {
+    const selectLi = document.querySelector(`li[data-date='${day}']`);
+    selectLi.classList.add("paint");
+  }
+}
