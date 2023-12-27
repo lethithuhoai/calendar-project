@@ -30,15 +30,10 @@ let time = new Date(),
   currentDay = time.getDate();
 
 const getCurrentYear = new Date().getFullYear();
-const firstOfCurrentYear = Array.from(
-  { length: 50 },
-  (_, i) => currentYear - i
-);
-const lastOfCurrentYear = Array.from(
-  { length: 50 },
-  (_, i) => currentYear + 1 + i
-);
+const firstOfCurrentYear = Array.from({ length: 50 },(_, i) => currentYear - i);
+const lastOfCurrentYear = Array.from({ length: 50 },(_, i) => currentYear + 1 + i);
 const listOfYears = firstOfCurrentYear.reverse().concat(lastOfCurrentYear);
+
 // getDay va getDate: day la lay thu, date la lay ngay
 const renderCalendar = () => {
   let firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay(),
@@ -185,22 +180,7 @@ const handleClickDate = () => {
 };
 
 //  prev next
-preNextIcon.forEach((icon) =>
-  icon.addEventListener("click", () => {
-    currentMonth = icon.id === "prev" ? currentMonth - 1 : currentMonth + 1;
 
-    if (currentMonth <= 1 || currentMonth > 11) {
-      time = new Date(currentYear, currentMonth);
-      currentYear = time.getFullYear();
-      currentMonth = time.getMonth();
-      listOfYears.push(currentYear);
-    } else {
-      time = currentMonth + 1;
-    }
-    renderCalendar();
-    handleClickDate();
-  })
-);
 
 // change time
 handleClickDate();
