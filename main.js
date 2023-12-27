@@ -22,6 +22,7 @@ let saveFirstDate = null;
 let saveFinalDate = null;
 const optionsDate = { day: "numeric", month: "short", year: "numeric" };
 let chosenItem = null;
+let isShowCalendar = null;
 
 let time = new Date(),
   currentYear = time.getFullYear(),
@@ -29,7 +30,7 @@ let time = new Date(),
   currentDay = time.getDate();
 
 const getCurrentYear = new Date().getFullYear();
-const firtsOfCurrentYear = Array.from(
+const firstOfCurrentYear = Array.from(
   { length: 50 },
   (_, i) => currentYear - i
 );
@@ -37,24 +38,24 @@ const lastOfCurrentYear = Array.from(
   { length: 50 },
   (_, i) => currentYear + 1 + i
 );
-const listOfYears = firtsOfCurrentYear.reverse().concat(lastOfCurrentYear);
-
+const listOfYears = firstOfCurrentYear.reverse().concat(lastOfCurrentYear);
+// getDay va getDate: day la lay thu, date la lay ngay
 const renderCalendar = () => {
-  let firstDayofMonth = new Date(currentYear, currentMonth, 1).getDay(),
-    lastDateofMonth = new Date(currentYear, currentMonth + 1, 0).getDate(),
-    lastDayofMonth = new Date(
+  let firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay(),
+    lastDateOfMonth = new Date(currentYear, currentMonth + 1, 0).getDate(),
+    lastDayOfMonth = new Date(
       currentYear,
       currentMonth,
-      lastDateofMonth
+      lastDateOfMonth
     ).getDay(),
-    lastDateofLastMonth = new Date(currentYear, currentMonth, 0).getDate();
+    lastDateOfLastMonth = new Date(currentYear, currentMonth, 0).getDate();
   let liTag = "";
   console.log(new Date().getDate(), new Date().getFullYear());
-  for (let i = firstDayofMonth; i > 0; i--) {
-    liTag += `<li class="inactive">${lastDateofLastMonth - i + 1}</li>`;
+  for (let i = firstDayOfMonth; i > 0; i--) {
+    liTag += `<li class="inactive">${lastDateOfLastMonth - i + 1}</li>`;
   }
 
-  for (let i = 1; i <= lastDateofMonth; i++) {
+  for (let i = 1; i <= lastDateOfMonth; i++) {
     let newDate = new Date(
       `${i} ${months[currentMonth]} ${currentYear}`
     ).getTime();
@@ -72,8 +73,8 @@ const renderCalendar = () => {
     }
   }
 
-  for (let i = lastDayofMonth; i < 6; i++) {
-    liTag += `<li class="inactive">${i - lastDayofMonth + 1}</li>`;
+  for (let i = lastDayOfMonth; i < 6; i++) {
+    liTag += `<li class="inactive">${i - lastDayOfMonth + 1}</li>`;
   }
 
   //Map months
@@ -127,7 +128,7 @@ const handleClickDate = () => {
     item.addEventListener("click", function () {
       const chosenDate = `${item.textContent} ${months[currentMonth]} ${currentYear}`;
 
-      // getTime la get milisecond, may tinh se tu parse ra theo local time
+      // getTime la get millisecond, may tinh se tu parse ra theo local time
       if (
         (saveFirstDate && saveFinalDate) ||
         new Date(chosenDate).getTime() < saveFirstDate
@@ -209,3 +210,16 @@ function changeOptionYear() {
 document.getElementById("select-year").onchange = function () {
   changeOptionYear();
 };
+
+function handleOnShowCalendar() {
+  dateInput.addEventListener("click", function () {
+    const calendar = document.querySelector(".wrapper");
+    console.log(calendar);
+    if (calendar.classList.contains("show")) {
+      calendar.classList.remove("show");
+    } else if (calendar && !calendar.classList.contains("show")) {
+      calendar.classList.add("show");
+    }
+  });
+}
+handleOnShowCalendar();

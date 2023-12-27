@@ -38,7 +38,13 @@ body {
   border-radius: 10px;
   height: fit-content;
   padding-top: 10px;
+  display: none;
 }
+
+.wrapper.show {
+  display: block;
+}
+
 .head-calendar {
   display: flex;
   /* justify-content: start; */
@@ -147,6 +153,10 @@ body {
   background: #5456f5;
 } */
 
-.chosen + *:not(.chosen):not(:last-child) {
+/* .chosen + *:not(.chosen):not(:last-child) {
   background-color: yellow;
+} */
+
+.chosen + .chosen {
+  background-color: aqua;
 }
